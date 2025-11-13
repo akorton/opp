@@ -9,7 +9,7 @@ import ru.tgu.opp.service.AuthenticationService;
 import ru.tgu.opp.service.UserService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class LoginController {
     private final AuthenticationService authenticationService;

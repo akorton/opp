@@ -22,8 +22,8 @@ public class Executor extends User {
     }
 
     @Override
-    public String getRole() {
-        return Role.EXECUTOR.name();
+    public Role getRole() {
+        return Role.EXECUTOR;
     }
 
     public static Executor fromUser(User user) {

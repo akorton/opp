@@ -23,8 +23,8 @@ public class Client extends User {
     }
 
     @Override
-    public String getRole() {
-        return Role.CLIENT.name();
+    public Role getRole() {
+        return Role.CLIENT;
     }
 
     public static Client fromUser(User user) {

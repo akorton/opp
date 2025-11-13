@@ -31,7 +31,7 @@ public class User implements UserDetails {
         return null;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return null;
     }
 

@@ -30,6 +30,13 @@ public class UserService {
         return clientOptional.isPresent() ? clientOptional.get() : executorOptional.get();
     }
 
+    public Client getClientById(Integer id) {
+        return clientRepository.getReferenceById(id);
+    }
+    public Executor getExecutorById(Integer id) {
+        return executorRepository.getReferenceById(id);
+    }
+
     public User save(User user, Role role) {
         return switch (role) {
             case EXECUTOR -> executorRepository.save(Executor.fromUser(user));
