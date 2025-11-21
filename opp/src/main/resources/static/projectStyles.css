@@ -1,0 +1,64 @@
+html {
+    align-items: flex-start;
+    padding-top: 30px;
+    box-sizing: border-box;
+}
+
+body {
+    max-width: 1000px
+}
+
+#projects {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.item {
+    border: 1px solid var(--primary-border-color);
+    background-color: var(--primary-bg-color);
+    padding: 20px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.item > .title {
+    font-size: 19px;
+    line-height: 30px;
+    color: var(--primary-color);
+}
+
+.item > .description {
+    font-size: 15px;
+    line-height: 18px;
+    color: var(--secondary-color);
+}
+
+.item > .data {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item > .data > .subject {
+    font-size: 13.5px;
+    line-height: 15px;
+    color: var(--ternary-color);
+}
+
+.item > .data > .deadline {
+    font-size: 13.5px;
+    line-height: 15px;
+    color: var(--accent-color);
+}
+
+.item > .data > .executorIds {
+    font-size: 13px;
+    line-height: 20px;
+    color: var(--ternary-color);
+
+    background-color: var(--ternary-bg-color);
+    border-radius: 12px;
+    padding: 3px 8px;
+}

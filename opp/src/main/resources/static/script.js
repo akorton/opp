@@ -8,7 +8,8 @@ const alertForm = document.getElementById("alertForm");
 const alertRequest = document.getElementById("alertRequest");
 const form = document.getElementById("form");
 
-const url = "http://localhost:8080/api/auth";
+const host = "http://localhost:8080";
+const apiUrl = host + "/api/auth";
 
 const validate = () => {
     // Reset alert
@@ -36,12 +37,32 @@ const validate = () => {
     return !error;
 };
 
+const redirect = (token) => {
+    fetch(host + "/project.html", {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error();
+        }
+
+        return response.text();
+    }).then(data => {
+        document.open();
+        document.writeln(data);
+        document.close();
+    });
+};
+
 const submit = (endpoint) => {
     if (!validate()) {
         return;
     }
 
-    fetch(url + endpoint, {
+    fetch(apiUrl + endpoint, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -59,7 +80,8 @@ const submit = (endpoint) => {
 
         return response.json();
     }).then(data => {
-        console.log(data.token);
+        localStorage.setItem("token", data.token);
+        redirect(data.token);
     })
 };
 
