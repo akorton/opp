@@ -21,6 +21,8 @@ public class Task {
     private String description;
     private LocalDateTime deadline;
     private TaskStatus status;
+    @ManyToOne
+    private Project project;
 
     @ManyToMany
     @JoinTable(

@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Entity
 @Data
 @Builder
@@ -17,8 +20,10 @@ public class Project {
     private Integer id;
     private String title;
     private String subject;
-    @OneToOne
-    private Task finalTask;
+    private String description;
+    private LocalDateTime deadline;
+    @ManyToMany
+    private List<Executor> executors;
     @ManyToOne
     private Client client;
 }

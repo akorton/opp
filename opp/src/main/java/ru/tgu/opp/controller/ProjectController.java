@@ -16,12 +16,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/project")
-@PreAuthorize("hasAuthority('CLIENT')")
 public class ProjectController {
     private final ProjectService projectService;
     private final ModelMapper modelMapper;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ProjectDto create(@RequestBody CreateProjectDto dto) {
         var project = projectService.create(dto);
         return convertToDto(project);
@@ -29,6 +29,7 @@ public class ProjectController {
 
     @PostMapping
     @RequestMapping("/update")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ProjectDto update(@RequestBody ProjectDto dto) {
         var project = projectService.update(dto);
         return convertToDto(project);
@@ -43,9 +44,7 @@ public class ProjectController {
 
     private ProjectDto convertToDto(Project project) {
         ProjectDto dto = modelMapper.map(project, ProjectDto.class);
-        dto.setDescription(project.getFinalTask().getDescription());
-        dto.setDeadline(project.getFinalTask().getDeadline());
-        dto.setExecutorIds(project.getFinalTask().getExecutors().stream()
+        dto.setExecutorIds(project.getExecutors().stream()
                 .map(Executor::getId)
                 .collect(Collectors.toList()));
         return dto;

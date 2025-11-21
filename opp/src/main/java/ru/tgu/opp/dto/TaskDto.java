@@ -12,9 +12,12 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateTaskDto {
-    private Integer projectId;
+public class TaskDto {
+    private Integer id;
     private String description;
     private LocalDateTime deadline;
-    private List<Integer> executorIds = List.of();
+    private List<Integer> ExecutorIds;
+    private List<Integer> prerequisiteIds;
+    private String taskStatus;
+    private Integer projectId;
 }
