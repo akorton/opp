@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./script.js" defer></script>
+</head>
+<body>
+    <form id="form">
+        <label for="username">Username</label>
+        <input id="username" type="text" placeholder="Input username..." required>
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Input password..." required>
+        <label for="role">Role</label>
+        <select id="role" required>
+            <option id="defaultOption" disabled selected>Choose role</option>
+            <option>EXECUTOR</option>
+            <option>CLIENT</option>
+        </select>
+        <div id="buttons">
+            <button type="submit" id="register">Register</button>
+            <button type="submit" id="login">Login</button>
+        </div>
+    </form>
+    <p id="alertForm">Please fill out all fields.</p>
+    <p id="alertRequest">Server error or user with such username already exists.</p>
+</body>
+</html>
