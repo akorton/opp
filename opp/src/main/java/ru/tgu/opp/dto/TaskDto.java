@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.tgu.opp.model.TaskStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +19,6 @@ public class TaskDto {
     private LocalDateTime deadline;
     private List<Integer> ExecutorIds;
     private List<Integer> prerequisiteIds;
-    private String taskStatus;
+    private TaskStatus taskStatus;
     private Integer projectId;
 }

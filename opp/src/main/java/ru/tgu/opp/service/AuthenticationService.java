@@ -20,14 +20,12 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public JwtAuthenticationResponse signUp(RegisterRequest request) {
-        Role role = Role.valueOf(request.getRole());
-
         User user = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
-        userService.create(user, role);
+        userService.create(user, request.getRole());
 
         var jwt = jwtService.generateToken(user);
 
