@@ -3,8 +3,7 @@ package ru.tgu.opp.dto;
 import lombok.Data;
 
 @Data
-public class SignRequest {
+public class LoginRequest {
     private String username;
     private String password;
-    private String role;
 }

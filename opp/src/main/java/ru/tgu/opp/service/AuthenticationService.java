@@ -6,9 +6,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.tgu.opp.dto.JwtAuthenticationResponse;
-import ru.tgu.opp.dto.SignRequest;
-import ru.tgu.opp.model.Client;
-import ru.tgu.opp.model.Executor;
+import ru.tgu.opp.dto.LoginRequest;
+import ru.tgu.opp.dto.RegisterRequest;
 import ru.tgu.opp.model.Role;
 import ru.tgu.opp.model.User;
 
@@ -20,7 +19,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public JwtAuthenticationResponse signUp(SignRequest request) {
+    public JwtAuthenticationResponse signUp(RegisterRequest request) {
         Role role = Role.valueOf(request.getRole());
 
         User user = User.builder()
@@ -35,7 +34,7 @@ public class AuthenticationService {
         return new JwtAuthenticationResponse(jwt);
     }
 
-    public JwtAuthenticationResponse signIn(SignRequest request) {
+    public JwtAuthenticationResponse signIn(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(),
                 request.getPassword()

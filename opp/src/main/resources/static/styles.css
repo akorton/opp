@@ -33,14 +33,41 @@ body {
     max-width: 500px;
     width: 100%;
     box-shadow: 0px 4px 24px 0px #32384912;
-    padding: 32px;
+    padding: 0 0 32px;
     border-radius: 20px;
     position: relative;
+}
+
+#tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#tabs > div {
+    padding: 14px 0px;
+    background-color: var(--ternary-bg-color);
+    width: 100%;
+    text-align: center;
+}
+
+#tabs > div.active {
+    background-color: var(--primary-bg-color);
+    border-bottom: 2px solid var(--accent-color);
+}
+
+#tabs > div.active > p {
+    color: var(--primary-color);
+}
+
+#tabs > div > p {
+    color: var(--secondary-color);
 }
 
 form {
     display: flex;
     flex-direction: column;
+    padding: 0 32px;
 }
 
 input, select {
@@ -86,10 +113,15 @@ button {
     box-shadow: 0px 4px 24px 0px #32325D0F;
 
     transition: all 0.3s ease;
+    display: none;
 }
 
 button:hover {
     background-color: var(--accent-hover-bg-color);
+}
+
+#register {
+    display: block;
 }
 
 #alertForm, #alertRequest {

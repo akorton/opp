@@ -1,15 +1,20 @@
 const usernameInput = document.getElementById("username");
 const passwordInput = document.getElementById("password");
 const roleInput = document.getElementById("role");
+const roleLabel = document.getElementById('role-label');
 const defaultOptions = document.getElementById("defaultOption").innerText;
 const registerButton = document.getElementById("register");
 const loginButton = document.getElementById("login");
 const alertForm = document.getElementById("alertForm");
 const alertRequest = document.getElementById("alertRequest");
 const form = document.getElementById("form");
+const registerTab = document.getElementById("register-tab");
+const loginTab = document.getElementById("login-tab");
 
 const host = "http://localhost:8080";
 const apiUrl = host + "/api/auth";
+
+let register = true;
 
 const validate = () => {
     // Reset alert
@@ -26,7 +31,8 @@ const validate = () => {
         error = true;
     }
 
-    if (roleInput.value == defaultOptions) {
+    if (roleInput.value == defaultOptions && register) {
+        console.log("here");
         error = true;
     }
 
@@ -36,6 +42,30 @@ const validate = () => {
 
     return !error;
 };
+
+registerTab.addEventListener('click', () => {
+    registerTab.classList.add('active');
+    registerButton.style.display = 'block';
+    role.style.display = 'block';
+    roleLabel.style.display = 'block';
+
+    loginTab.classList.remove('active');
+    loginButton.style.display = 'none';
+
+    register = true;
+});
+
+loginTab.addEventListener('click', () => {
+    loginTab.classList.add('active');
+    loginButton.style.display = 'block';
+    role.style.display = 'none';
+    roleLabel.style.display = 'none';
+
+    registerTab.classList.remove('active');
+    registerButton.style.display = 'none';
+
+    register = false;
+});
 
 const redirect = (token) => {
     fetch(host + "/project.html", {

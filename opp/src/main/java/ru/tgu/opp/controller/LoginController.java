@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.tgu.opp.dto.JwtAuthenticationResponse;
-import ru.tgu.opp.dto.SignRequest;
+import ru.tgu.opp.dto.LoginRequest;
+import ru.tgu.opp.dto.RegisterRequest;
 import ru.tgu.opp.service.AuthenticationService;
 import ru.tgu.opp.service.UserService;
 
@@ -16,12 +17,12 @@ public class LoginController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public JwtAuthenticationResponse signUp(@RequestBody SignRequest request) {
+    public JwtAuthenticationResponse signUp(@RequestBody RegisterRequest request) {
         return authenticationService.signUp(request);
     }
 
     @PostMapping("/login")
-    public JwtAuthenticationResponse signIn(@RequestBody SignRequest request) {
+    public JwtAuthenticationResponse signIn(@RequestBody LoginRequest request) {
         return authenticationService.signIn(request);
     }
 
