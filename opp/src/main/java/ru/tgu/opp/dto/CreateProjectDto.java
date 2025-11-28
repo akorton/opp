@@ -6,4 +6,5 @@ import lombok.Data;
 public class CreateProjectDto {
     private final String title;
     private final String subject;
+    private final String description;
 }

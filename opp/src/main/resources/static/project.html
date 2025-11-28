@@ -9,16 +9,32 @@
 </head>
 <body>
     <div id="projects">
-        
     </div>
+    <button id="add" style="display: none;">Add project</button>
+    <div id="overlay"></div>
+    <form id="modal">
+        <label for="title">Title</label>
+        <input id="title" type="text" placeholder="Input title..." required>
+        <label for="description">Description</label>
+        <input id="description" type="text" placeholder="Input description..." required>
+        <label for="subject">Subject</label>
+        <input id="subject" type="text" placeholder="Input subject..." required>
+        <label for="deadline">Deadline</label>
+        <input id="deadline" type="datetime-local">
+        <label for="executors">Executors</label>
+        <input id="executors" type="text" placeholder="Input executors like: 1,2,3">
+        <input id="project-id" style="display: none;">
+        <button id="submit-project" type="submit">Create</button>
+    </form>
     <div class="item" style="display: none;">
-            <h3 class="title">Title</h3>
-            <p class="description">Description</p>
-            <div class="data">
-                <p class="subject">Subject: Opp</p>
-                <p class="deadline">Deadline: 2025-11-21T12:18:11.763036</p>
-                <p class="executorIds">Executor Ids: 1,2,3</p>
-            </div>
+        <h3 class="title">Title</h3>
+        <p class="description">Description</p>
+        <div class="data">
+            <p class="subject">Subject: Opp</p>
+            <p class="deadline">Deadline: 2025-11-21T12:18:11.763036</p>
+            <p class="executorIds">Executor Ids: 1,2,3</p>
         </div>
+        <button class="edit" style="display: none;">Edit</button>
+    </div>
 </body>
 </html>

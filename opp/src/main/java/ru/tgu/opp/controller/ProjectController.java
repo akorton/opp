@@ -22,7 +22,7 @@ public class ProjectController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ProjectDto create(@RequestBody CreateProjectDto dto) {
+    public ProjectDto create(@RequestBody ProjectDto dto) {
         var project = projectService.create(dto);
         return convertToDto(project);
     }
