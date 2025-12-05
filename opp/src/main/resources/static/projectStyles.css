@@ -13,6 +13,7 @@ body {
     align-items: center;
     padding: 0;
     background-color: var(--secondary-bg-color);
+    position: static;
 }
 
 #projects {
@@ -23,7 +24,7 @@ body {
     margin-bottom: 20px;
 }
 
-.item {
+.item, .item-task {
     width: 100%;
     border: 1px solid var(--primary-border-color);
     background-color: var(--primary-bg-color);
@@ -34,37 +35,37 @@ body {
     box-sizing: border-box;
 }
 
-.item > .title {
+.title {
     font-size: 19px;
     line-height: 30px;
     color: var(--primary-color);
 }
 
-.item > .description {
+.description {
     font-size: 15px;
     line-height: 18px;
     color: var(--secondary-color);
 }
 
-.item > .data {
+.data {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.item > .data > .subject {
+.subject, .prerequisites {
     font-size: 13.5px;
     line-height: 15px;
     color: var(--ternary-color);
 }
 
-.item > .data > .deadline {
+.deadline {
     font-size: 13.5px;
     line-height: 15px;
     color: var(--accent-color);
 }
 
-.item > .data > .executorIds {
+.executorIds {
     font-size: 13px;
     line-height: 20px;
     color: var(--ternary-color);
@@ -83,19 +84,19 @@ button {
     align-self: center;
 }
 
-#add {
+#add, #add-task {
     min-width: 300px;
     align-self: center;
 }
 
-#overlay {
+#overlay, #overlay-task {
     position: fixed;
     inset: 0;
     background-color: #00000080;
     display: none;
 }
 
-#modal {
+#modal, #modal-task {
     position: absolute;
     left: 50%;
     top: 50%;

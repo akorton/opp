@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tasks page</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./projectStyles.css" />
+    <link rel="stylesheet" href="./tasksStyles.css" />
+    <script src="./tasksScript.js" defer></script>
+</head>
+<body>
+    <button id="add-task" style="display: none;">Add task</button>
+    <div id="tasks">
+    </div>
+    <div id="overlay-task"></div>
+    <form id="modal-task" style="display: none;">
+        <label for="description-task">Description</label>
+        <input id="description-task" type="text" placeholder="Input description..." required>
+        <label for="deadline-task">Deadline</label>
+        <input id="deadline-task" type="datetime-local">
+        <label for="executors-task">Executors</label>
+        <input id="executors-task" type="text" placeholder="Input executors like: 1,2,3">
+        <label for="prerequisites-task" id="prerequisites-task-label">Prerequisites</label>
+        <input id="prerequisites-task" type="text" placeholder="Input prerequisites like: 1,2,3">
+        <label for="status-task" id="status-task-label">Task status</label>
+        <select id="status-task">
+            <option>PREREQUISITES_NOT_MET</option>
+            <option>NOT_FINISHED</option>
+            <option>IN_PROGRESS</option>
+            <option>FINISHED</option>
+        </select>
+        <button id="submit-task" type="submit">Create</button>
+        <input id="task-id" hidden />
+    </form>
+    <div class="item-task" style="display: none;">
+        <h3 class="title">Title</h3>
+        <p class="description">Description</p>
+        <p class="deadline">Deadline: 2025-11-21T12:18:11.763036</p>
+        <div class="data">
+            <p class="prerequisites">Prerequisites: Opp</p>
+            <p class="executorIds">Executor Ids: 1,2,3</p>
+        </div>
+        <p class="status">FINISHED</p>
+        <button class="edit" style="display: none;">Edit</button>
+    </div>
+</body>
+</html>

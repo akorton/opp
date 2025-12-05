@@ -17,7 +17,7 @@ public class TaskDto {
     private Integer id;
     private String description;
     private LocalDateTime deadline;
-    private List<Integer> ExecutorIds;
+    private List<Integer> executorIds;
     private List<Integer> prerequisiteIds;
     private TaskStatus taskStatus;
     private Integer projectId;

@@ -67,8 +67,8 @@ loginTab.addEventListener('click', () => {
     register = false;
 });
 
-const redirect = (token) => {
-    fetch(host + "/project.html", {
+const redirect = (token, endpoint) => {
+    fetch(host + endpoint, {
         method: "GET",
         headers: {
             "Authorization": "Bearer " + token,
@@ -111,7 +111,7 @@ const submit = (endpoint) => {
         return response.json();
     }).then(data => {
         localStorage.setItem("token", data.token);
-        redirect(data.token);
+        redirect(data.token, "/project.html");
     })
 };
 

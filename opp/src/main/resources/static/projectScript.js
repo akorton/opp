@@ -114,6 +114,15 @@ const addItem = (itemData) => {
             modalButton.innerText = 'Save';
         });
     }
+
+    curItem.addEventListener('click', (e) => {
+        if (edit.contains(e.target)) {
+            return;
+        }
+
+        localStorage.setItem("projectId", itemData.id);
+        redirect(token, "/tasks.html");
+    });
     
     projects.appendChild(curItem);
 };

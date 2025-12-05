@@ -31,8 +31,9 @@ public class ProjectService {
                 .description(dto.getDescription())
                 .executors(Objects.isNull(dto.getExecutorIds()) ? List.of() :
                         dto.getExecutorIds().stream()
-                        .map(userService::getExecutorById)
-                        .collect(Collectors.toList()))
+                                .filter(Objects::nonNull)
+                                .map(userService::getExecutorById)
+                                .collect(Collectors.toList()))
                 .build();
 
         return projectRepository.save(project);
@@ -47,6 +48,7 @@ public class ProjectService {
         if (Objects.nonNull(dto.getDescription())) projectDB.setDescription(dto.getDescription());
         if (Objects.nonNull(dto.getExecutorIds())) {
             projectDB.setExecutors(dto.getExecutorIds().stream()
+                    .filter(Objects::nonNull)
                     .map(userService::getExecutorById)
                     .collect(Collectors.toList()));
         }

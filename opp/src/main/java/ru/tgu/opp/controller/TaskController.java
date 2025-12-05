@@ -34,7 +34,7 @@ public class TaskController {
         return taskService.update(dto);
     }
 
-    @GetMapping("/project")
+    @GetMapping
     public List<TaskColumnDto> getAllTasksOfProjectWithColumn(@RequestParam("project_id") Integer projectId) {
         return taskService.getAllOfProjectWithColumn(projectService.getById(projectId));
     }

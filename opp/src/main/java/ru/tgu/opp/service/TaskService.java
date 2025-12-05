@@ -26,11 +26,12 @@ public class TaskService {
         var task = Task.builder()
                 .project(project)
                 .description(dto.getDescription())
-                .deadline(Objects.isNull(dto.getDeadline()) ? LocalDateTime.now() : dto.getDeadline())
+                .deadline(dto.getDeadline())
                 .status(TaskStatus.NOT_FINISHED)
                 .executors(Objects.isNull(dto.getExecutorIds())
                         ? List.of()
                         : dto.getExecutorIds().stream()
+                        .filter(Objects::nonNull)
                         .map(userService::getExecutorById)
                         .collect(Collectors.toList()))
                 .prerequisites(List.of())
@@ -52,32 +53,32 @@ public class TaskService {
         if (Objects.nonNull(dto.getDescription())) taskDB.setDescription(dto.getDescription());
         if (Objects.nonNull(dto.getExecutorIds())) {
             taskDB.setExecutors(dto.getExecutorIds().stream()
+                    .filter(Objects::nonNull)
                     .map(userService::getExecutorById)
                     .collect(Collectors.toList()));
         }
 
-        taskDB.setStatus(getCorrectStatus(taskDB));
-        if (Objects.nonNull(dto.getTaskStatus())) {
-            if (!isValidStatus(taskDB, dto.getTaskStatus())) {
-                throw new RuntimeException("Invalid task status.");
-            }
-
-            taskDB.setStatus(dto.getTaskStatus());
-        }
-
         if (Objects.nonNull(dto.getPrerequisiteIds())) {
             taskDB.setPrerequisites(dto.getPrerequisiteIds().stream()
+                    .filter(Objects::nonNull)
                     .map(this::getById)
                     .collect(Collectors.toList()));
         }
 
         if (!isExecutorsValid(taskDB) || Objects.isNull(taskDB.getProject())
-                || !taskDB.getProject().getExecutors().contains((Executor) currentUser)) {
+                || !taskDB.getExecutors().contains((Executor) currentUser)) {
             throw new RuntimeException("Executor is not in project.");
         }
 
         if (!isPrerequisitesValid(taskDB)) {
             throw new RuntimeException("Prerequisites are not valid (probably cyclic dependency).");
+        }
+
+        taskDB.setStatus(getCorrectStatus(taskDB));
+        if (Objects.nonNull(dto.getTaskStatus())) {
+            if (isValidStatus(taskDB, dto.getTaskStatus())) {
+                taskDB.setStatus(dto.getTaskStatus());
+            }
         }
 
         return convertToDto(taskRepository.save(taskDB));
@@ -109,9 +110,9 @@ public class TaskService {
             return TaskStatus.PREREQUISITES_NOT_MET;
         }
 
-        if (task.getPrerequisitesOf().stream()
-                .anyMatch(p -> p.getStatus() == TaskStatus.IN_PROGRESS || p.getStatus() == TaskStatus.FINISHED)) {
-            return TaskStatus.FINISHED;
+        if (task.getPrerequisites().stream()
+                .allMatch(p -> p.getStatus() == TaskStatus.FINISHED)) {
+            return TaskStatus.NOT_FINISHED;
         }
 
         return task.getStatus();
@@ -125,11 +126,6 @@ public class TaskService {
 
         // some prerequisites are not met
         if (task.getPrerequisites().stream().anyMatch(p -> p.getStatus() != TaskStatus.FINISHED)) {
-            return false;
-        }
-
-        if (newStatus == TaskStatus.IN_PROGRESS && task.getPrerequisitesOf().stream()
-                .anyMatch(p -> p.getStatus() == TaskStatus.IN_PROGRESS || p.getStatus() == TaskStatus.FINISHED)) {
             return false;
         }
 
