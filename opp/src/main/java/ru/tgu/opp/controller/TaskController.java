@@ -33,6 +33,11 @@ public class TaskController {
     public TaskDto update(@RequestBody TaskDto dto) {
         return taskService.update(dto);
     }
+    @DeleteMapping
+    @PreAuthorize("hasAuthority('EXECUTOR')")
+    public void delete(@RequestParam("task_id") Integer id) {
+        taskService.delete(id);
+    }
 
     @GetMapping
     public List<TaskColumnDto> getAllTasksOfProjectWithColumn(@RequestParam("project_id") Integer projectId) {

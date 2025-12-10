@@ -39,6 +39,10 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
+    public void delete(Integer id) {
+        projectRepository.deleteById(id);
+    }
+
     public Project update(ProjectDto dto) {
         var projectDB = projectRepository.getReferenceById(dto.getId());
 

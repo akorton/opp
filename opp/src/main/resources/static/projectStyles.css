@@ -79,7 +79,7 @@ button {
     display: block;
 }
 
-.edit {
+.edit, .delete {
     min-width: 300px;
     align-self: center;
 }

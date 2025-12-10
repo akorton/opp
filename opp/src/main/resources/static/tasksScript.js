@@ -18,6 +18,7 @@ const urlTaskApi = host + "/api/task";
 
 const projectId = localStorage.getItem("projectId");
 let cols = [];
+let idToTask = new Map();
 
 let isExecutor = false;
 
@@ -44,7 +45,7 @@ modalTaskButton.addEventListener('click', (e) => {
             "deadline": deadlineTaskInput.value,
             "executorIds": executorsTaskInput.value.split(","),
             "prerequisiteIds": prerequisitesTaskInput.value.split(","),
-            "taskStatus": statusTaskInput.value == "FINISHED" || statusTaskInput.value == "IN_PROGRESS" ? statusTaskInput.value : null,
+            "taskStatus": statusTaskInput.value,
             "projectId": projectId
         });
     console.log(data);
@@ -97,6 +98,13 @@ const getColorByStatus = (status) => {
     }
 };
 
+const clearActive = () => {
+    for (let t of idToTask.values()) {
+        t.classList.remove('active');
+        t.classList.remove('active-grey');
+    }
+};
+
 const addTaskItem = (itemColData) => {
     var curItem = itemTask.cloneNode(true);
 
@@ -127,8 +135,11 @@ const addTaskItem = (itemColData) => {
     status.style.color = getColorByStatus(status.innerText);
 
     var edit = curItem.getElementsByClassName("edit")[0];
+    var deleteBtn = curItem.getElementsByClassName("delete")[0];
     if (isExecutor) {
         edit.style.display = 'block';
+        deleteBtn.style.display = 'block';
+
         var taskId = itemData.id;
 
         edit.addEventListener('click', () => {
@@ -142,13 +153,40 @@ const addTaskItem = (itemColData) => {
             executorsTaskInput.value = itemData.executorIds;
             statusTaskInput.value = itemData.taskStatus;
         });
+
+        deleteBtn.addEventListener('click', () => {
+           fetch(urlTaskApi + `?task_id=${taskId}`, {
+            method: "DELETE",
+            headers: {
+                    "Authorization": "Bearer " + token,
+                    'Content-Type': 'application/json'
+                }
+           }).then(response => {
+            if (response.ok) {
+                getTasks();
+            }
+           })
+        });
     }
-    
+
+    curItem.addEventListener('click', (e) => {
+        if (edit.contains(e.target) || deleteBtn.contains(e.target)) {
+            return;
+        }
+
+        clearActive();
+        idToTask.get(taskId).classList.add('active');
+        itemData.prerequisiteIds.forEach(t => {
+            idToTask.get(t).classList.add('active-grey');
+        });
+    });
+    idToTask.set(taskId, curItem);
     cols[curColIdx].appendChild(curItem);
 };
 
 const getTasks = () => {
     tasks.innerHTML = '';
+    idToTask = new Map();
 
     fetch(urlTaskApi + `?project_id=${projectId}`, {
         method: "GET",
@@ -198,6 +236,16 @@ const checkExecutor = () => {
         }
     });
 }
+
+document.addEventListener('click', (e) => {
+    for (let t of idToTask.values()) {
+        if (t.contains(e.target)) {
+            return;
+        }
+    }
+
+    clearActive();
+});
 
 checkExecutor();
 getTasks();

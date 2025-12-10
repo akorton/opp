@@ -35,6 +35,12 @@ public class ProjectController {
         return convertToDto(project);
     }
 
+    @DeleteMapping
+    @PreAuthorize("hasAuthority('CLIENT')")
+    public void delete(@RequestParam("project_id") Integer id) {
+        projectService.delete(id);
+    }
+
     @GetMapping
     public List<ProjectDto> getAll() {
         return projectService.getAll().stream()

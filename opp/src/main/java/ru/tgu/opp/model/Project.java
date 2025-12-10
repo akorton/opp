@@ -24,6 +24,8 @@ public class Project {
     private LocalDateTime deadline;
     @ManyToMany
     private List<Executor> executors;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Task> tasks;
     @ManyToOne
     private Client client;
 }

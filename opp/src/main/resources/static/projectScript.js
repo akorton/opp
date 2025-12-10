@@ -98,8 +98,10 @@ const addItem = (itemData) => {
     executorIds.innerText = `Executors ids: ${itemData.executorIds}`;
 
     var edit = curItem.getElementsByClassName("edit")[0];
+    var deleteBtn = curItem.getElementsByClassName("delete")[0];
     if (isClient) {
         edit.style.display = 'block';
+        deleteBtn.style.display = 'block';
         var projectId = itemData.id;
 
         edit.addEventListener('click', () => {
@@ -113,10 +115,24 @@ const addItem = (itemData) => {
             executorsInput.value = itemData.executorIds;
             modalButton.innerText = 'Save';
         });
+
+        deleteBtn.addEventListener('click', () => {
+            fetch(urlApi + `?project_id=${projectId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": "Bearer " + token,
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    getProjects();
+                }
+            })
+        });
     }
 
     curItem.addEventListener('click', (e) => {
-        if (edit.contains(e.target)) {
+        if (edit.contains(e.target) || deleteBtn.contains(e.target)) {
             return;
         }
 

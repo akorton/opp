@@ -119,17 +119,8 @@ public class TaskService {
     }
 
     private boolean isValidStatus(Task task, TaskStatus newStatus) {
-        // these statuses are assigned automatically
-        if (newStatus == TaskStatus.PREREQUISITES_NOT_MET || newStatus == TaskStatus.NOT_FINISHED) {
-            return false;
-        }
-
-        // some prerequisites are not met
-        if (task.getPrerequisites().stream().anyMatch(p -> p.getStatus() != TaskStatus.FINISHED)) {
-            return false;
-        }
-
-        return true;
+        return task.getStatus() == newStatus ||
+                (newStatus != TaskStatus.PREREQUISITES_NOT_MET && task.getStatus() != TaskStatus.PREREQUISITES_NOT_MET);
     }
 
     private boolean isExecutorsValid(Task task) {
@@ -204,6 +195,26 @@ public class TaskService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public void delete(Integer id) {
+        var currentUser = userService.getCurrentUser();
+        var taskDB = taskRepository.getReferenceById(id);
+
+        if (!taskDB.getExecutors().contains((Executor) currentUser)) {
+            throw new RuntimeException("Executor not in task.");
+        }
+
+        taskDB.setPrerequisites(new ArrayList<Task>());
+        taskRepository.save(taskDB);
+
+        taskDB.getPrerequisitesOf().stream()
+                        .forEach(t -> {
+                            t.getPrerequisites().remove(taskDB);
+                            taskRepository.save(t);
+                        });
+
+        taskRepository.deleteById(id);
     }
 
     private TaskDto convertToDto(Task task) {

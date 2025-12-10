@@ -36,3 +36,11 @@ body {
 .status {
     font-weight: 700;
 }
+
+.item-task.active {
+    box-shadow: 1px 1px 4px 10px rgba(31, 217, 13, 0.34);;
+}
+
+.item-task.active-grey {
+    box-shadow: 1px 1px 4px 10px rgba(131, 140, 130, 0.34);
+}
