@@ -6,20 +6,38 @@ const defaultOptions = document.getElementById("defaultOption").innerText;
 const registerButton = document.getElementById("register");
 const loginButton = document.getElementById("login");
 const alertForm = document.getElementById("alertForm");
-const alertRequest = document.getElementById("alertRequest");
 const form = document.getElementById("form");
 const registerTab = document.getElementById("register-tab");
 const loginTab = document.getElementById("login-tab");
+const toast = document.getElementById("toast-error");
+let toast_container = document.getElementById("toast-container");
 
-const host = "http://localhost:8080";
+const domain_local = "localhost";
+const domain_prod = "217.76.176.93";
+//const host = `http://${domain_prod}:8080`;
+const host = `http://${domain_local}:8080`;
 const apiUrl = host + "/api/auth";
 
 let register = true;
 
+const createNewToast = (message) => {
+    const cur = toast.cloneNode(true);
+    cur.style.display = 'flex';
+
+    const text = cur.getElementsByClassName("message")[0];
+    text.innerText = message;
+
+    setInterval(() => {
+        cur.remove();
+    }, 3000);
+
+    toast_container.appendChild(cur);
+};
+
+
 const validate = () => {
     // Reset alert
     alertForm.style.display = "none";
-    alertRequest.style.display = "none";
 
     var error = false;
 
@@ -32,7 +50,6 @@ const validate = () => {
     }
 
     if (roleInput.value == defaultOptions && register) {
-        console.log("here");
         error = true;
     }
 
@@ -102,10 +119,11 @@ const submit = (endpoint) => {
             "password": passwordInput.value,
             "role": roleInput.value
         })
-    }).then(response => {
+    }).then(async response => {
         if (!response.ok) {
-            alertRequest.style.display = "block";
-            throw new Error();
+            const error = await response.text();
+            console.log(error);
+            createNewToast(error);
         } 
 
         return response.json();

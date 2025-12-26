@@ -34,6 +34,17 @@
         </form>
     </div>
     <p id="alertForm">Please fill out all fields.</p>
-    <p id="alertRequest">Server error or user with such username already exists.</p>
+    <div id="toast-container">
+    </div>
+    <div class="toast" id="toast-error">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14 25.6667C20.4433 25.6667 25.6666 20.4433 25.6666 14C25.6666 7.55667 20.4433 2.33333 14 2.33333C7.55666 2.33333 2.33331 7.55667 2.33331 14C2.33331 20.4433 7.55666 25.6667 14 25.6667Z" fill="#FF4D59"/>
+<path d="M17.5 10.5L10.5 17.5M10.5 10.5L17.5 17.5" stroke="white" stroke-width="2.56667" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+            <div class="text">
+                <p class="header">Error!</p>
+                <p class="message">Something went wrong. Please try again.</p>
+            </div>
+    </div>
 </body>
 </html>

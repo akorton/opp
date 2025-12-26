@@ -63,16 +63,22 @@ public class TaskService {
                     .filter(Objects::nonNull)
                     .map(this::getById)
                     .collect(Collectors.toList()));
+
+            if (taskDB.getPrerequisites().stream()
+                    .anyMatch(task -> task.getProject().getId() != taskDB.getProject().getId())) {
+                throw new RuntimeException("At least one task doesn't belong to this project.");
+            }
         }
 
-        if (!isExecutorsValid(taskDB) || Objects.isNull(taskDB.getProject())
-                || !taskDB.getExecutors().contains((Executor) currentUser)) {
+        if (!isExecutorsValid(taskDB) || Objects.isNull(taskDB.getProject())) {
             throw new RuntimeException("Executor is not in project.");
         }
 
-        if (!isPrerequisitesValid(taskDB)) {
-            throw new RuntimeException("Prerequisites are not valid (probably cyclic dependency).");
+        if (!taskDB.getExecutors().contains((Executor) currentUser)) {
+            throw new RuntimeException("Executor is not in task.");
         }
+
+        checkPrerequisites(taskDB);
 
         taskDB.setStatus(getCorrectStatus(taskDB));
         if (Objects.nonNull(dto.getTaskStatus())) {
@@ -85,7 +91,13 @@ public class TaskService {
     }
 
     public Task getById(Integer id) {
-        return taskRepository.getReferenceById(id);
+        var optionalTask = taskRepository.findById(id);
+
+        if (optionalTask.isEmpty()) {
+            throw new RuntimeException("Task with this id doesn't exist.");
+        }
+
+        return optionalTask.get();
     }
 
     private List<Task> getAllOfProject(Project project) {
@@ -182,19 +194,14 @@ public class TaskService {
         return result;
     }
 
-    private boolean isPrerequisitesValid(Task task) {
+    private void checkPrerequisites(Task task) {
         if (Objects.isNull(task.getProject())) {
-            return false;
+            return;
         }
 
         var project = task.getProject();
 
-        try {
-            var tasks = getAllOfProjectWithColumn(project);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        getAllOfProjectWithColumn(project);
     }
 
     public void delete(Integer id) {

@@ -12,6 +12,8 @@ const statusTaskInput = document.getElementById("status-task");
 const statusTaskLabel = document.getElementById("status-task-label");
 const modalTaskButton = document.getElementById("submit-task");
 const taskIdInput = document.getElementById("task-id");
+const id_p_task = document.getElementById("id-p-task");
+toast_container = document.getElementById("toast-container-task");
 
 const urlTaskApi = host + "/api/task";
 // const token = localStorage.getItem("token");
@@ -57,10 +59,14 @@ modalTaskButton.addEventListener('click', (e) => {
             'Content-Type': 'application/json'
         },
         body: data
-    }).then(response => {
+    }).then(async response => {
         if (response.ok) {
             closeTaskModal();
             getTasks();
+        } else {
+            const error = await response.text();
+            console.log(error);
+            createNewToast(error);
         }
     })
 });
@@ -136,11 +142,12 @@ const addTaskItem = (itemColData) => {
 
     var edit = curItem.getElementsByClassName("edit")[0];
     var deleteBtn = curItem.getElementsByClassName("delete")[0];
+
+    var taskId = itemData.id;
+
     if (isExecutor) {
         edit.style.display = 'block';
         deleteBtn.style.display = 'block';
-
-        var taskId = itemData.id;
 
         edit.addEventListener('click', () => {
             modalTaskButton.innerText = 'Save';
@@ -161,9 +168,13 @@ const addTaskItem = (itemColData) => {
                     "Authorization": "Bearer " + token,
                     'Content-Type': 'application/json'
                 }
-           }).then(response => {
+           }).then(async response => {
             if (response.ok) {
                 getTasks();
+            } else {
+                const error = await response.text();
+                console.log(error);
+                createNewToast(error);
             }
            })
         });
@@ -247,6 +258,26 @@ document.addEventListener('click', (e) => {
     clearActive();
 });
 
+const setIdTask = () => {
+    fetch(host + "/api/auth/id", {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error();
+        }
+
+        return response.json();
+    }).then(data => {
+        console.log(data);
+        id_p_task.innerText = `Your id: ${data}`;
+    });
+}
+
+
 checkExecutor();
 getTasks();
-
+setIdTask();

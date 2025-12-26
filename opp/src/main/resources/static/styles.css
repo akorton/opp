@@ -124,7 +124,7 @@ button:hover {
     display: block;
 }
 
-#alertForm, #alertRequest {
+#alertForm {
     display: none;
     position: absolute;
     bottom: -80px;
@@ -138,3 +138,51 @@ button:hover {
     min-width: 300px;
     text-align: center;
 }
+
+#toast-container, #toast-container-project, #toast-container-task {
+    position: fixed;
+    top: 32px;
+    right: 32px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-bottom: 18px;
+}
+
+.toast {
+    min-width: 320px;
+    max-width: 1728px;
+    border-radius: 9px;
+    box-sizing: border-box;
+    padding: 17.6px 22.4px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 4px 24px 0px #32325D0F;
+    width: 434.42px;
+    height: 80.25px;
+    display: none;
+    gap: 17.6px;
+}
+
+#toast-error {
+    border-left: 4px solid #FF4D59;
+}
+
+.text {
+    width: 295.75px;
+}
+
+.text > .header {
+    padding-bottom: 1px;
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 20px;
+    color: #21292F;
+}
+
+.text > .message {
+    font-size: 15px;
+    line-height: 21px;
+    color: #59677A;
+}
+

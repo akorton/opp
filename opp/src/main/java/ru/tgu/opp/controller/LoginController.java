@@ -37,4 +37,9 @@ public class LoginController {
     public String testC() {
         return "Success";
     }
+
+    @GetMapping("id")
+    public Integer getId() {
+        return userService.getCurrentUser().getId();
+    }
 }

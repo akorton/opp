@@ -24,17 +24,27 @@ public class UserService {
         Optional<Executor> executorOptional = executorRepository.findByUsername(username);
 
         if (clientOptional.isEmpty() && executorOptional.isEmpty()) {
-            throw new RuntimeException("No such user.");
+            throw new RuntimeException("User with this username doesn't exist.");
         }
 
         return clientOptional.isPresent() ? clientOptional.get() : executorOptional.get();
     }
 
     public Client getClientById(Integer id) {
-        return clientRepository.getReferenceById(id);
+        var optionalUser = clientRepository.findById(id);
+
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("User with this id doesn't exist.");
+        }
+        return optionalUser.get();
     }
     public Executor getExecutorById(Integer id) {
-        return executorRepository.getReferenceById(id);
+        var optionalUser = executorRepository.findById(id);
+
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("User with this id doesn't exist.");
+        }
+        return optionalUser.get();
     }
 
     public User save(User user, Role role) {

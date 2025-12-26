@@ -10,6 +10,8 @@ const deadlineInput = document.getElementById("deadline");
 const executorsInput = document.getElementById("executors");
 const modalButton = document.getElementById("submit-project");
 const projectIdInput = document.getElementById("project-id");
+const id_p = document.getElementById("id-p");
+toast_container = document.getElementById("toast-container-project");
 
 // const host = "http://localhost:8080";
 const urlApi = host + "/api/project";
@@ -52,10 +54,14 @@ modalButton.addEventListener('click', (e) => {
             'Content-Type': 'application/json'
         },
         body: data
-    }).then(response => {
+    }).then(async response => {
         if (response.ok) {
             closeModal();
             getProjects();
+        } else {
+            const error = await response.text();
+            console.log(error);
+            createNewToast(error);
         }
     })
 });
@@ -179,5 +185,25 @@ const checkClient = () => {
     });
 }
 
+const setId = () => {
+    fetch(host + "/api/auth/id", {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error();
+        }
+
+        return response.json();
+    }).then(data => {
+        console.log(data);
+        id_p.innerText = `Your id: ${data}`;
+    });
+}
+
 checkClient();
 getProjects();
+setId();
