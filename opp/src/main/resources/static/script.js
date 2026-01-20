@@ -14,8 +14,8 @@ let toast_container = document.getElementById("toast-container");
 
 const domain_local = "localhost";
 const domain_prod = "217.76.176.93";
-//const host = `http://${domain_prod}:8080`;
-const host = `http://${domain_local}:8080`;
+const host = `http://${domain_prod}:8080`;
+// const host = `http://${domain_local}:8080`;
 const apiUrl = host + "/api/auth";
 
 let register = true;

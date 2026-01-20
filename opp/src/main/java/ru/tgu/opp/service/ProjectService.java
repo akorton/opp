@@ -36,6 +36,8 @@ public class ProjectService {
                                 .collect(Collectors.toList()))
                 .build();
 
+        validateDeadline(dto.getDeadline());
+
         return projectRepository.save(project);
     }
 
@@ -56,6 +58,8 @@ public class ProjectService {
                     .map(userService::getExecutorById)
                     .collect(Collectors.toList()));
         }
+
+        validateDeadline(dto.getDeadline());
 
         return projectRepository.save(projectDB);
     }
@@ -84,5 +88,11 @@ public class ProjectService {
                 .filter(project -> project.getExecutors().stream()
                         .anyMatch((executor -> Objects.equals(executor.getId(), executorId))))
                 .collect(Collectors.toList());
+    }
+
+    private void validateDeadline(LocalDateTime deadline) {
+        if (Objects.isNull(deadline) || deadline.isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Deadline can't be in the past or null.");
+        }
     }
 }

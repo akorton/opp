@@ -37,6 +37,8 @@ public class TaskService {
                 .prerequisites(List.of())
                 .build();
 
+        validateDeadline(dto.getDeadline());
+
         if (!isExecutorsValid(task) || Objects.isNull(task.getProject())
                 || !task.getProject().getExecutors().contains((Executor) currentUser)) {
             throw new RuntimeException("Executor is not in project.");
@@ -57,6 +59,8 @@ public class TaskService {
                     .map(userService::getExecutorById)
                     .collect(Collectors.toList()));
         }
+
+        validateDeadline(dto.getDeadline());
 
         if (Objects.nonNull(dto.getPrerequisiteIds())) {
             taskDB.setPrerequisites(dto.getPrerequisiteIds().stream()
@@ -81,11 +85,12 @@ public class TaskService {
         checkPrerequisites(taskDB);
 
         taskDB.setStatus(getCorrectStatus(taskDB));
+        validateStatus(taskDB, dto.getTaskStatus());
         if (Objects.nonNull(dto.getTaskStatus())) {
-            if (isValidStatus(taskDB, dto.getTaskStatus())) {
-                taskDB.setStatus(dto.getTaskStatus());
-            }
+            taskDB.setStatus(dto.getTaskStatus());
         }
+
+        updatePrerequisitesOf(taskDB);
 
         return convertToDto(taskRepository.save(taskDB));
     }
@@ -117,6 +122,16 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    private void updatePrerequisitesOf(Task task) {
+        if (task.getStatus() == TaskStatus.FINISHED) {
+            for (var prereqOf: task.getPrerequisitesOf()) {
+                prereqOf.setStatus(getCorrectStatus(prereqOf));
+
+                taskRepository.save(prereqOf);
+            }
+        }
+    }
+
     private TaskStatus getCorrectStatus(Task task) {
         if (task.getPrerequisites().stream().anyMatch(p -> p.getStatus() != TaskStatus.FINISHED)) {
             return TaskStatus.PREREQUISITES_NOT_MET;
@@ -130,9 +145,12 @@ public class TaskService {
         return task.getStatus();
     }
 
-    private boolean isValidStatus(Task task, TaskStatus newStatus) {
-        return task.getStatus() == newStatus ||
-                (newStatus != TaskStatus.PREREQUISITES_NOT_MET && task.getStatus() != TaskStatus.PREREQUISITES_NOT_MET);
+    private void validateStatus(Task task, TaskStatus newStatus) {
+        if (!(task.getStatus() == newStatus ||
+                (newStatus != TaskStatus.PREREQUISITES_NOT_MET &&
+                        task.getStatus() != TaskStatus.PREREQUISITES_NOT_MET))) {
+            throw new RuntimeException("Invalid status.");
+        }
     }
 
     private boolean isExecutorsValid(Task task) {
@@ -222,6 +240,12 @@ public class TaskService {
                         });
 
         taskRepository.deleteById(id);
+    }
+
+    private void validateDeadline(LocalDateTime deadline) {
+        if (Objects.isNull(deadline) || deadline.isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Deadline can't be in the past or null.");
+        }
     }
 
     private TaskDto convertToDto(Task task) {

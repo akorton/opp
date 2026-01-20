@@ -277,7 +277,6 @@ const setIdTask = () => {
     });
 }
 
-
 checkExecutor();
 getTasks();
 setIdTask();
