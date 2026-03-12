@@ -123,12 +123,10 @@ public class TaskService {
     }
 
     private void updatePrerequisitesOf(Task task) {
-        if (task.getStatus() == TaskStatus.FINISHED) {
-            for (var prereqOf: task.getPrerequisitesOf()) {
-                prereqOf.setStatus(getCorrectStatus(prereqOf));
+        for (var prereqOf: task.getPrerequisitesOf()) {
+            prereqOf.setStatus(getCorrectStatus(prereqOf));
 
-                taskRepository.save(prereqOf);
-            }
+            taskRepository.save(prereqOf);
         }
     }
 
