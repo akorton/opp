@@ -1,0 +1,13 @@
+rules:
+  - id: use-of-sha1
+    languages:
+      - java
+    message: "SHA-1 is cryptographically broken and should not be used in Spring applications"
+    severity: CRITICAL
+    pattern-either:
+      - pattern: MessageDigest.getInstance("SHA1")
+      - pattern: MessageDigest.getInstance("SHA-1")
+    metadata:
+      category: security
+      technology:
+        - spring
