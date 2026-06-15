@@ -60,4 +60,4 @@ jobs:
           format: 'openapi'
 #          rules_file_name: '.zap/rules.tsv'
           allow_issue_writing: false
-          cmd_options: '-c .zap/rules.tsv "-no_report"'
+          cmd_options: '-c .zap/rules.tsv'
