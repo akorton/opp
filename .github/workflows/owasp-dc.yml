@@ -22,5 +22,7 @@ jobs:
         with:
           project: opp
           path: .
+          format: HTML
+          out: reports/dependency-check
           args: >
             --failOnCVSS 7
