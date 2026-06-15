@@ -24,6 +24,8 @@ jobs:
 
       - name: Start Spring Boot application
         run: |
+          pwd
+          ls
           mvn clean install
           mvn -B spring-boot:run &
           
