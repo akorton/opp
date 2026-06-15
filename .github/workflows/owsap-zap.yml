@@ -60,11 +60,4 @@ jobs:
           format: 'openapi'
           rules_file_name: '.zap/rules.tsv'
           allow_issue_writing: false
-          cmd-options: "-c .zap/rules.tsv -a"
-
-      - name: Upload ZAP Report (Markdown)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: zap-md-report
-          path: report.md
+          cmd_options: "-c .zap/rules.tsv -a"
