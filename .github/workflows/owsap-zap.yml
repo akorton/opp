@@ -24,6 +24,7 @@ jobs:
 
       - name: Start Spring Boot application
         run: |
+          mvn clean install
           mvn -B spring-boot:run &
           
           for i in {1..30}; do
