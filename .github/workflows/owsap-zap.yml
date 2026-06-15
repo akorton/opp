@@ -21,16 +21,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build Spring Boot application
-        run: |
-          ./opp/mvnw clean package -DskipTests
-
       - name: Start Spring Boot application
         run: |
-          # Run in background
-          java -jar opp/target/*.jar &
+          mvn -B spring-boot:run &
           
-          # Wait for application to be ready
           for i in {1..30}; do
             if curl -s http://localhost:8080/index.html > /dev/null 2>&1; then
               echo "Application is ready"
