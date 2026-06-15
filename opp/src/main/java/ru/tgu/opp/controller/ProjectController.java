@@ -27,8 +27,7 @@ public class ProjectController {
         return convertToDto(project);
     }
 
-    @PostMapping
-    @RequestMapping("/update")
+    @PostMapping("/update")
     @PreAuthorize("hasAuthority('CLIENT')")
     public ProjectDto update(@RequestBody ProjectDto dto) {
         var project = projectService.update(dto);
