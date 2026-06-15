@@ -54,7 +54,7 @@ jobs:
           done
 
       - name: Run OWASP ZAP API Scan
-        uses: zaproxy/action-api-scan@v0.6.0
+        uses: zaproxy/action-api-scan@v0.10.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           artifact_name: zap-scan
