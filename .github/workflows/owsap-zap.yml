@@ -23,12 +23,12 @@ jobs:
 
       - name: Build Spring Boot application
         run: |
-          ./mvnw clean package -DskipTests
+          ./opp/mvnw clean package -DskipTests
 
       - name: Start Spring Boot application
         run: |
           # Run in background
-          java -jar target/*.jar &
+          java -jar opp/target/*.jar &
           
           # Wait for application to be ready
           for i in {1..30}; do
