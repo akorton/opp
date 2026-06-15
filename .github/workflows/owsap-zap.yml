@@ -56,6 +56,7 @@ jobs:
       - name: Run OWASP ZAP API Scan
         uses: zaproxy/action-api-scan@v0.6.0
         with:
+          artifact_name: zap-scan
           target: 'http://localhost:8080/v3/api-docs'
           format: 'openapi'
 #          rules_file_name: '.zap/rules.tsv'
