@@ -59,8 +59,7 @@ jobs:
           target: 'http://localhost:8080/v3/api-docs'
           format: 'openapi'
           rules_file_name: '.zap/rules.tsv'
-          allow_issue_writing: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          allow_issue_writing: false
           cmd_options: '-w report.md'
 
       - name: Upload ZAP Report (Markdown)
