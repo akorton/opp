@@ -1,0 +1,4 @@
+# Format: RULE_ID	ACTION	REASON
+# Actions: IGNORE, FAIL, or WARN
+
+90004	FAIL	(Cross-Origin-Resource-Policy Header Missing or Invalid - originally was WARN)

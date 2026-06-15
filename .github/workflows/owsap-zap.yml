@@ -61,36 +61,11 @@ jobs:
           rules_file_name: '.zap/rules.tsv'
           allow_issue_writing: true
           token: ${{ secrets.GITHUB_TOKEN }}
+          cmd_options: '-w report.md'
 
-      # for counting high-risk vulnerabilities
-      - name: Upload ZAP Report (JSON)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: zap-json-report
-          path: report.json
-
-      # for readable format
       - name: Upload ZAP Report (Markdown)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: zap-md-report
           path: report.md
-
-      - name: Check for High-Risk Vulnerabilities
-        if: always()
-        run: |
-          if [ -f report.json ]; then
-            HIGH_COUNT=$(jq '[.site[].alerts[] | select(.risk=="High")] | length' report.md 2>/dev/null || echo "0")
-           
-            echo "High risk issues: $HIGH_COUNT"
-          
-            if [ "$HIGH_COUNT" -gt 0 ]; then
-              echo "Found $HIGH_COUNT high-risk vulnerabilities!"
-              echo "Please check the ZAP report artifacts for details."
-              exit 1
-            fi
-          else
-            echo "No report.json found"
-          fi
