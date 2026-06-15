@@ -33,7 +33,7 @@ jobs:
       - name: Run OWASP Dependency-Check
         run: |
           cd opp
-          ./mvnw dependency-check:check
+          mvn dependency-check:check
 
       - name: Upload HTML Report
         if: always()
