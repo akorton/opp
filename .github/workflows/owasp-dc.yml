@@ -31,7 +31,9 @@ jobs:
             ${{ runner.os }}-dependency-check-
 
       - name: Run OWASP Dependency-Check
-        run: ./mvnw dependency-check:check
+        run: |
+          cd opp
+          ./mvnw dependency-check:check
 
       - name: Upload HTML Report
         if: always()
