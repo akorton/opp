@@ -52,12 +52,12 @@ jobs:
             echo "Waiting for application to start... ($i/30)"
             sleep 2
           done
-          cd ..
 
       - name: Run OWASP ZAP API Scan
         uses: zaproxy/action-api-scan@v0.6.0
         with:
           target: 'http://localhost:8080/v3/api-docs'
           format: 'openapi'
-          rules_file_name: '.zap/rules.tsv'
+#          rules_file_name: '.zap/rules.tsv'
           allow_issue_writing: false
+          cmd_options: '-c .zap/rules.tsv'
